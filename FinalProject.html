@@ -1,0 +1,134 @@
+<h2>Final Project Title</h2>
+
+<!-- 
+    https://landing.athabascau.ca/blog/view/16789343/project-submission-requirements
+
+    TODO:
+    - Continue progress images
+    - Make 360 degree turn more accurate
+    - Improve:
+      - Area estimation
+    - Review:
+        - normalization (add first & last pt normalization? or consider 2 points either side?)
+    - Create separate repo for project source code
+
+-->
+
+<h3>Design Decisions</h3>
+<!--
+  How did you approach the overall design of the project?
+  What resources did you employ at this stage to assist you in creating an overall design?
+-->
+
+<p>
+  Ended up removing the LCD, as I didnt have enough pins, as well as the fact
+  that I decided to control via Raspberry Pi over wifi, so the on-robot LCD
+  screen seemed somewhat redundant.
+</p>
+
+<h3>General Programming Considerations</h3>
+
+<!-- 
+  Were any special programming considerations required to implement your design? 
+  Where did you seek resource information to assist in this process?
+  -->
+
+<p>
+  While the control of the arduino was relatively simple to implement, the
+  processing of distance data received by the ultrasonic sensor would likely be
+  quite challenging to complete in arduino code. This led me to consider using a
+  Raspberry Pi as a processing device, to allow for data organization in python.
+  <br />
+  Working with reading the serial output of the arduino in python, it was tough
+  to get the timing right, as the arduino code had to be started prior to
+  connecting the python serial monitor.
+  <br />
+  For drawing the mapped distances in python, I used the Turtle package, and
+  frequently referenced the documentation found here:
+  https://docs.python.org/3/library/turtle.html
+</p>
+
+<h3>Program Implementation</h3>
+<!-- 
+  Discuss your robot's programming. What major categories of robotic control did you implement? 
+  What control approach did you employ to manage the overall control of your robot?
+  -->
+<p>
+  My robot operates under reactive control, as it awaits a signal from the user
+  in order to begin performing its functionality.
+
+  <br />
+
+  Implementing the normalization of outlier readings was relatively complex, as
+  I only have a basic stats foundation. It's not infrequent that the ultrasonic
+  sensor fails to receive the return signal directly, and outputs an object way
+  off in the distance. These faulty readings had to be eliminated/normalized in
+  order to have a vauguely accurate map representation or floor space
+  estimation.
+</p>
+
+<h3>Testing</h3>
+<!--
+  Discuss your test approach, your test plan and test results. 
+  That is, how did you test your robot and program to ensure you had met your design goals? 
+  Discuss any deviations from your expected test plan output and what you did about this.
+-->
+<p>
+  Timing the 360 degree turn of the motor with 720 distance readings at equal
+  intervals took plenty of trial and error, as the servo was unable to rotate
+  the required 360 degrees, so I used a geared motor I had from a previous
+  project I'd worked on. While the low RPM of the motor was beneficial, lacking
+  the position/state control of a servo made alignment and precision somewhat
+  tedious.
+
+  <br />
+
+  Ended up adding a point of overlap (approximately 0.5 degrees of rotation, in
+  order for complete scan to be properly drawn)
+</p>
+
+<h3>Outcome</h3>
+<!--
+  Discuss the outcome of your project. 
+  Did your robot meet all design expectations? 
+  Now that you are done, what would you do differently were you to undertake the same project again?
+-->
+<p>
+  Had there been a budget for the project, using lidar or some combination of
+  sensors likely wouldve produced more accurate results than the current
+  implementation which uses ultrasound.
+</p>
+
+<h3>Videos of Robot</h3>
+
+<div>
+  <p>
+    Videos and documentation of snapshots(milestones) that were made during the
+    making of the project.
+  </p>
+
+  <br />
+
+  <p>
+    [initial_border_drawing01.png] is an image generated using random data. One
+    of the first tests of the border drawing code, where input distance data was
+    generated with slight variations, and using python, the distances were drawn
+    as a set of linked points on a coordinate plane.
+  </p>
+</div>
+
+<h3>Source Code</h3>
+<p>
+  Source code for the project, including both Arduino code and Python code which
+  handles data processing and representation can be found in this GitHub
+  repository:
+  <!-- TODO -->
+</p>
+
+<h3>Collaboration Regarding Project</h3>
+<p>
+  The only reply I received on my project proposal discussion post was from the
+  Tutor & Course Coordinator, which can be found here
+  https://landing.athabascau.ca/discussion/view/17494425/final-project-proposal-floor-area-mapping
+</p>
+<!-- TODO -->
