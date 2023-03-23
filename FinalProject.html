@@ -2,16 +2,6 @@
 
 <!-- 
     https://landing.athabascau.ca/blog/view/16789343/project-submission-requirements
-
-    TODO:
-    - Continue progress images
-    - Make 360 degree turn more accurate
-    - Improve:
-      - Area estimation
-    - Review:
-        - normalization (add first & last pt normalization? or consider 2 points either side?)
-    - Create separate repo for project source code
-
 -->
 
 <h3>Design Decisions</h3>
@@ -24,6 +14,23 @@
   Ended up removing the LCD, as I didnt have enough pins, as well as the fact
   that I decided to control via Raspberry Pi over wifi, so the on-robot LCD
   screen seemed somewhat redundant.
+</p>
+
+<p>
+  Used a motor from a previous project, which has an internal gearbox making it
+  low rpm, in comparison to the motors which came with the course kit.
+</p>
+
+<p>
+  I used old <a href="https://basicfun.com/knex/"><span> K'nex</span></a> which
+  I had from when I was younger in order to build the majority of the robot.
+  While some components didnt fit nicely, like the motor, I was able to create
+  friction-based holders for them.
+  <br />
+  The aesthetics of the project sort of fell apart as I reached the final
+  stages, as I needed a smooth surface for the wires linking the ultrasonic
+  sensor to the arduino. The friction on the wires dragging was a major
+  challenge, as it made the turn degrees vary, which made results garbled.
 </p>
 
 <h3>General Programming Considerations</h3>
@@ -45,7 +52,9 @@
   <br />
   For drawing the mapped distances in python, I used the Turtle package, and
   frequently referenced the documentation found here:
-  https://docs.python.org/3/library/turtle.html
+  <a href=" https://docs.python.org/3/library/turtle.html"
+    ><span> https://docs.python.org/3/library/turtle.html</span></a
+  >
 </p>
 
 <h3>Program Implementation</h3>
@@ -56,6 +65,13 @@
 <p>
   My robot operates under reactive control, as it awaits a signal from the user
   in order to begin performing its functionality.
+
+  <br />
+
+  I used python for most of the data processing, and to interact with the serial
+  input/output of the Arduino. When the program is run, the python code sends
+  signals over USB to the Arduino, and the Arduino sends the distance
+  measurements back.
 
   <br />
 
@@ -85,6 +101,11 @@
 
   Ended up adding a point of overlap (approximately 0.5 degrees of rotation, in
   order for complete scan to be properly drawn)
+
+  <br />
+
+  It took lots of trial and error working with the motor and ultrasonic sensor,
+  as the wires made performing a complete turn quite challenging.
 </p>
 
 <h3>Outcome</h3>
@@ -109,6 +130,11 @@
 
   <br />
 
+  <p>Example image created by the program, which is a scan of my room.</p>
+  <img
+    src="https://github.com/jaredwebber/comp444-final-project/blob/main/Images/image_when_directions_aligned_and_data_normalized.png?raw=true"
+    alt="Output of Complete Process"
+  />
   <p>
     [initial_border_drawing01.png] is an image generated using random data. One
     of the first tests of the border drawing code, where input distance data was
@@ -122,13 +148,19 @@
   Source code for the project, including both Arduino code and Python code which
   handles data processing and representation can be found in this GitHub
   repository:
-  <!-- TODO -->
+  <a href="https://github.com/jaredwebber/comp444-final-project"
+    ><span>https://github.com/jaredwebber/comp444-final-project</span></a
+  >
 </p>
 
 <h3>Collaboration Regarding Project</h3>
 <p>
   The only reply I received on my project proposal discussion post was from the
   Tutor & Course Coordinator, which can be found here
-  https://landing.athabascau.ca/discussion/view/17494425/final-project-proposal-floor-area-mapping
+  <a
+    href="https://landing.athabascau.ca/discussion/view/17494425/final-project-proposal-floor-area-mapping"
+    ><span
+      >https://landing.athabascau.ca/discussion/view/17494425/final-project-proposal-floor-area-mapping</span
+    ></a
+  >
 </p>
-<!-- TODO -->
