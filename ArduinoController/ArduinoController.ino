@@ -4,7 +4,7 @@ const int MOTOR_AIN1 = 13;   // control pin 1 on the motor driver for the right 
 const int MOTOR_AIN2 = 12;   // control pin 2 on the motor driver for the right motor
 const int MOTOR_PWMA = 11;   // speed control pin on the motor driver for the right motor
 const int RED_LED = 5;       // Active Scan Indicator LED
-const int YELLOW_LED = 4;    // Immenent Active Scan Indicator LED
+const int YELLOW_LED = 4;    // Ready Indicator LED
 const int GREEN_LED = 3;     // Idle Indicator LED
 
 enum SIGNAL
