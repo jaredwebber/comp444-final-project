@@ -1,5 +1,5 @@
-<h2>Room Mapping Robot</h2>
-
+<h1>Room Mapping Robot</h1>
+<hr />
 <!-- https://landing.athabascau.ca/blog/view/16789343/project-submission-requirements -->
 
 <h2>Initial Proposal</h2>
@@ -37,15 +37,16 @@
 <div>
   <p>
     While the plan originally outlined in the proposal post did change a bit,
-    the key features remain consistent. To review some key elements, I ended up
-    removing the LCD, as I didnt have enough Arduino pins to properly connect
-    it, as well as the fact that I decided to control the robot via Raspberry Pi
-    over wifi, so the on-robot LCD screen seemed somewhat redundant. For other
-    hardware, I used a motor from a previous project, which has an internal
-    gearbox making it extremely low rpm, in comparison to the motors which came
-    with the course kit. The other components used include the ultrasonic
-    sensor, motor controller, and breadboard which came with the SparkFun kit,
-    as well as many jumper cables.
+    the major features remain consistent. To review some key elements, I ended
+    up removing the LCD screen, as I didnt have enough Arduino pins to properly
+    connect it, as well as the fact that I decided to control the robot via
+    Raspberry Pi over wifi, so the on-robot LCD screen seemed somewhat
+    redundant. For other hardware, I used a motor from a previous personal
+    project, which has an internal gearbox making it extremely low rpm, in
+    comparison to the motors which came with the course kit. The other
+    components used include the ultrasonic sensor, motor controller, LEDs,
+    resistors, and the breadboard which came with the SparkFun kit, as well as
+    many jumper cables.
   </p>
   <img
     src="https://github.com/jaredwebber/comp444-final-project/blob/main/Images/planning_components.JPG?raw=true"
@@ -64,7 +65,9 @@
     <a href="https://basicfun.com/knex/"><span> K'nex</span></a> which I had
     from when I was younger, for the main frame of the project. While some
     components didnt fit nicely, like the motor, I was able to create
-    friction-based holders for them.
+    friction-based holders for them. This approach for prototyping was quite
+    useful, as the ability to connect, and rebuild elements without having to
+    start from scratch made the process much smoother overall.
   </p>
   <img
     src="https://github.com/jaredwebber/comp444-final-project/blob/main/Images/initial_planned_knex.jpg?raw=true"
@@ -115,15 +118,16 @@
     After key design decisions were made, the robot description can be
     summarized by the paragraph below:
     <br />
-    The idea for control is to place the robot in the room you wish to scan,
-    access the raspberry pi over ssh or vnc, and trigger the
+    In order to use the Room Mapping Robot, begin by placing the robot in the
+    room you wish to scan, then access the raspberry pi over ssh or vnc, and
+    trigger the
     <code>controller.py</code> file to start the scan. The LED indicator should
     switch from Green to Yellow, indicating command received, and the console
     should also display the current status. After a few seconds, the LED will
     change from Yellow to Red, and the motor will begin turning, scanning the
     room. The Robot will complete a counter-clockwise turn, and then the python
     script will trigger the clockwise turn, which follows the same LED sequence,
-    and motor directions, except now turning the opposite direction. Once both
+    and motor instructions, except now turning the opposite direction. Once both
     turns are complete, the python script processes the data received from the
     arduino, charts the approximate room shape, and calculates the approximate
     floor area of the room.
@@ -143,7 +147,7 @@
   to get the timing right, as the arduino code had to be started prior to
   connecting the python serial monitor. A number of different websites had
   instructions about connecting an Arduino to a Raspberry Pi, so the
-  implementation wasnt too challenging to figure out.
+  implementation wasnt too challenging after a bit of reasearch.
   <p>
     For drawing the mapped distances in python, I used the Turtle package, and
     frequently referenced the documentation found here:
@@ -156,11 +160,11 @@
     ultrasonic sensor, I used the python numpy package, which has documentation
     here:
     <a href="https://numpy.org"><span>https://numpy.org</span></a
-    >. After reading a number of sources on outlier removal, I decided to go
-    with a process where outliers are determined by comparing the difference
-    between adjacent points with a threshold based on standard deviation of the
-    adjacent values. When an outlier is detected, it's replaced by the average
-    of its neighbours.
+    >. After reading a number of resources on outlier removal, I decided to go
+    with an approach where outliers are determined by comparing the difference
+    between adjacent points with a threshold based on the standard deviation of
+    the adjacent values. When an outlier is detected, it's replaced by the
+    average of its neighbours.
   </p>
 </div>
 
@@ -173,11 +177,11 @@
   </p>
   <p>
     The first thing I implemented was the beginning of the data processing in
-    python. I created a simple script which generated fake data
+    python. I created a simple script which generated fake data (
     <a
       href="https://github.com/jaredwebber/comp444-final-project/blob/main/generate_data.py"
       ><code>generate_data.py</code></a
-    >, and used that as a starting place for working with the turtle package to
+    >), and used that as a starting place for working with the turtle package to
     draw the distances and surrounding walls.
   </p>
   <img
@@ -193,13 +197,14 @@
   <p>
     Once I had the initial image generation complete, I moved onto the Arduino
     code, beginning with a simple signal-driven control loop. The serial input
-    is checked every loop, and if theres a 1, 2, or 3 received, each of those
-    values have actions attached to them. 1 indicates a 'ready' state, which
-    turns the green 'Idle' LED off, and the yellow 'Ready' LED on. 2 triggers a
-    clockwise turn, which turns the motor 360 degress, after swapping the LEDs
-    to Red being active, and green, yellow inactive. 3 is the same as 2, except
-    for counterclockwise turn. The Arduino code is relatively straightforward,
-    except for the trial and error elements which will be discussed later under
+    is checked every loop, and if theres a "1", "2", or "3" received, each of
+    those values have actions attached to them. "1" indicates a 'Ready' state,
+    which turns the green 'Idle' LED off, and the yellow 'Ready' LED on. "2"
+    triggers a clockwise turn, which rotates the ultrasonic sensor 360 degrees,
+    after swapping the LEDs to Red being active, and both green and yellow
+    inactive. "3" is the same as "2", except for counterclockwise turn. The
+    Arduino code is relatively straightforward, except for the trial and error
+    elements which will be discussed later under
     <b>Testing</b>.
   </p>
 
@@ -313,13 +318,14 @@
 
   <p>
     Timing the 360 degree turn of the motor with 720 distance readings at equal
-    intervals took plenty of trial and error, as a motor obviosly lacks the
+    intervals took plenty of trial and error, as a motor obviously lacks the
     position/state knowledge of a servo. Precise alignment for a 360 degree turn
-    in both directions took many adjustments of motor speed, and time between
-    readings. This motor control was also impacted by the friction of the wires
-    attached to the ultrasonic sensor. I ended up adding 1 point of overlap
-    (approximately 0.5 degrees of rotation) ,in order for complete scan to be
-    drawn properly
+    in both directions took many adjustments of motor speed, and control loop
+    frequencies. This motor control was also impacted by the friction of the
+    wires attached to the ultrasonic sensor. I ended up adding 1 point of
+    overlap (approximately 0.5 degrees of rotation), with 721 points being
+    measured during each rotation of the ultrasonic sensor, in order for the
+    complete scan to be drawn properly.
   </p>
 
   <p>
@@ -329,8 +335,8 @@
     affected by the friction of the wires, was the connection between the post
     holding the ultrasonic sensor, and the motor, as it slipped within itself
     when it encountered too much resistance. I wanted to avoid glueing it
-    together though, as that would make adjustments challenging, and I was also
-    cautious about getting liquid glue near the motor spindle.
+    together though, as that would make future adjustments challenging, and I
+    was also cautious about getting liquid glue near the motor spindle.
   </p>
 </div>
 
@@ -358,17 +364,18 @@
     satisfied that it met the original design goals as both the key elements,
     approximating room area, and creating a visual map of the walls, were
     completed. While the results produced by the robot vary somewhat, and the
-    readings arent incredibly precise, given the basic hardware and time
-    constraints of the project, I believe it serves as a solid proof of concept.
-    This project was a great learning experience, and hands-on opportunity to
-    deal with integrating hardware and software, expecially considering the
-    uncertainty and unreliable nature of the inexpensive components.
+    readings arent incredibly precise, given the relatively basic and
+    inexpensive hardware, I believe it serves as a solid proof of concept. This
+    project was a great learning experience, and hands-on opportunity to deal
+    with integrating hardware and software, expecially considering the
+    uncertainty and unreliable nature of the physical components.
   </p>
   <p>
     In the inital proposal, I noted that the ultrasonic sensor is likely not the
     best choice for this use-case, so had there been a budget for the project,
     using lidar or some combination of sensors likely wouldve produced more
-    accurate results than the current implementation which uses ultrasound.
+    accurate results than the current implementation which uses (the extremenly
+    inexpensive SparkFun) ultrasound.
   </p>
   <p>
     It's also worth considering using a 360 degree servo, or a stacked system
